@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".CargaArchivosActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Carga de Archivos del Cliente"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCIArchivos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="CI del Cliente"
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnSeleccionarArchivos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Archivos"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvArchivosSeleccionados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No hay archivos seleccionados"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnEnviarArchivos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enviar Archivos"
+        android:textSize="16sp"
+        android:backgroundTint="@color/purple_500"/>
+
+</LinearLayout>

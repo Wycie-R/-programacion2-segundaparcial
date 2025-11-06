@@ -1,0 +1,118 @@
+# Sistema de Registro de Clientes - Examen Programación II
+
+## Nombre de la Aplicación
+**ExamenParcial - Sistema de Gestión de Clientes**
+
+## Descripción General del Sistema
+
+App desarrollada en Java implementa un sistema completo para la gestión de información de clientes, incluyendo captura de imágenes, carga de archivos y sincronización automática de logs de errores.
+
+### Principales Funcionalidades Desarrolladas
+
+#### 1. Formulario de Registro de Cliente (Requerimiento 1)
+- Captura de datos básicos del cliente:
+  - CI (Cédula de Identidad)
+  - Nombre completo
+  - Dirección
+  - Teléfono
+- Captura de 3 fotografías utilizando la cámara del dispositivo (fotoCasa1, fotoCasa2, fotoCasa3)
+- Envío de datos en formato JSON junto con las fotos como archivos Multipart
+- Integración con Retrofit para envío al servidor (webhook.site)
+
+#### 2. Carga Múltiple de Archivos (Requerimiento 2)
+- Selección múltiple de archivos desde el almacenamiento del dispositivo
+- Compresión automática de archivos en formato ZIP
+- Envío del archivo comprimido junto con el CI del cliente mediante Retrofit
+- Soporte para documentos, imágenes y videos
+
+#### 3. Sistema de Auditoría Local (Requerimiento 3)
+- Base de datos local implementada con Room
+- Entidad `LogApp` con tabla `logs_app` que registra:
+  - ID (autoincremental)
+  - Fecha y hora del evento
+  - Descripción del error
+  - Clase de origen del error
+- Registro automático de todos los errores capturados mediante try-catch
+- Utilidad `LoggerUtil` para facilitar el registro desde cualquier parte de la aplicación
+
+#### 4. Sincronización Automática con WorkManager (Requerimiento 4)
+- Tarea periódica ejecutándose cada 15 minutos (mínimo permitido por Android)
+- Proceso automatizado que:
+  1. Obtiene todos los registros de la tabla `logs_app`
+  2. Envía los datos al servidor mediante Retrofit
+  3. Elimina los registros locales una vez confirmada la sincronización exitosa
+- Implementación robusta con manejo de errores y reintentos
+
+## Tecnologías Utilizadas
+
+- **Lenguaje**: Java
+- **SDK Mínimo**: Android 24 (Android 7.0)
+- **SDK Target**: Android 34
+- **Arquitectura**: MVVM con Repository Pattern
+- **Base de Datos**: Room (Android Jetpack)
+- **Peticiones HTTP**: Retrofit 2
+- **Tareas en Segundo Plano**: WorkManager
+- **Manejo de Permisos**: ActivityResultContracts
+- **Compresión de Archivos**: Java ZIP
+
+## Estructura del Proyecto
+
+```
+├── database/
+│   ├── LogApp.java (Entidad)
+│   ├── LogAppDao.java (Data Access Object)
+│   └── AppDatabase.java (Base de datos Room)
+├── network/
+│   ├── ApiService.java (Interface Retrofit)
+│   └── RetrofitClient.java (Cliente HTTP)
+├── worker/
+│   └── SyncLogsWorker.java (Sincronización periódica)
+├── util/
+│   └── LoggerUtil.java (Utilidad para logging)
+├── MainActivity.java (Formulario principal)
+└── CargaArchivosActivity.java (Carga de archivos)
+```
+
+## Configuración Requerida
+
+### Permisos Necesarios
+- `CAMERA`: Para captura de fotografías
+- `READ_EXTERNAL_STORAGE` / `READ_MEDIA_IMAGES` / `READ_MEDIA_VIDEO`: Para acceso a archivos
+- `INTERNET`: Para comunicación con el servidor
+- `ACCESS_NETWORK_STATE`: Para verificar conectividad
+
+### Endpoint del Servidor
+Antes de ejecutar la aplicación, actualizar la URL base en `RetrofitClient.java`:
+```java
+private static final String BASE_URL = "https://webhook.site/b9d13067-c0f0-477f-8757-8ff2f48d216b";
+```
+
+## Instalación y Ejecución
+
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/Wycie-R/-programacion2-segundaparcial.git
+```
+
+2. Abrir el proyecto en Android Studio
+
+3. Actualizar el endpoint en `RetrofitClient.java`
+
+4. Sincronizar Gradle
+
+5. Ejecutar en un dispositivo físico o emulador (recomendado dispositivo físico para funcionalidad de cámara)
+
+## Características Técnicas Destacadas
+
+- **Manejo robusto de errores**: Todos los errores son capturados y registrados en la base de datos local
+- **Interfaz intuitiva**: Diseño limpio y fácil de usar con Material Design
+- **Eficiencia en almacenamiento**: Compresión de archivos antes del envío
+- **Sincronización inteligente**: WorkManager garantiza la entrega de logs incluso si la app está cerrada
+- **Gestión de memoria**: Uso eficiente de threads para operaciones pesadas
+
+## Autor
+Giovanni Manuel Rojas Giménez
+Universidad del Norte
+
+## Fecha de Entrega
+06-11-2025
